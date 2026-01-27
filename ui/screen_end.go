@@ -15,12 +15,9 @@ func (m endScreen) Init() tea.Cmd {
 	return nil
 }
 func (m endScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	switch msg := msg.(type) {
+	switch msg.(type) {
 	case tea.KeyMsg:
-		switch msg.String() {
-		case "ctrl+c", "q", "esc", "enter":
-			return m, tea.Quit
-		}
+		return m, tea.Quit
 	}
 
 	var cmd tea.Cmd = nil
@@ -29,7 +26,7 @@ func (m endScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m endScreen) View() string {
 	b := strings.Builder{}
-	b.WriteString(m.message + "\n")
-	b.WriteString("Press enter to quit\n")
+	b.WriteString(m.message + "\n\n")
+	b.WriteString("Press any key to exit\n")
 	return b.String()
 }
