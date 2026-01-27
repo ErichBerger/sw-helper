@@ -1,0 +1,19 @@
+const { PluginBaseClass } = window;
+
+export default class {{.PascalName}} extends PluginBaseClass {
+    static options = {
+        /**
+         * Specifies the text that is prompted to the user
+         * @type string
+         */
+        text: 'Seems like there\'s nothing more to see here.',
+    };
+    
+    init() {
+        {{if .Hook }}
+        console.log("this.el: ", this.el);
+        {{ else }}
+        console.log("Who needs data attributes anyway?");
+        {{ end }}
+    }
+}

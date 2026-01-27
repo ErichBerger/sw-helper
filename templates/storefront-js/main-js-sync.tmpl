@@ -1,0 +1,3 @@
+import {{.PascalName}} from './{{.KebabName}}/{{.KebabName}}.plugin';
+
+PluginManager.register('{{.PascalName}}', {{.PascalName}}{{if ne .Hook ""}}, '{{.Hook}}'{{end}});
