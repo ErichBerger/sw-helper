@@ -7,6 +7,7 @@ import (
 	"github.com/erichberger/sw-helper/ui/component"
 	"github.com/erichberger/sw-helper/ui/fields"
 	"github.com/erichberger/sw-helper/ui/form"
+	"github.com/erichberger/sw-helper/ui/style"
 )
 
 type storefrontJsScreen struct {
@@ -105,7 +106,7 @@ func newStorefrontJsScreen(config *app.Config) tea.Model {
 	return storefrontJsScreen{
 		config: config,
 		form: &form.Form{
-			Title: "Options for creating a Javascript Storefront Plugin",
+			Title: style.SuccessTitle.Render("Options for creating a Javascript Storefront Plugin"),
 			Components: []component.Component{
 				base,
 				name,

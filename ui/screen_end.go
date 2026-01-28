@@ -7,6 +7,7 @@ import (
 )
 
 type endScreen struct {
+	title   string
 	message string
 }
 
@@ -26,6 +27,7 @@ func (m endScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m endScreen) View() string {
 	b := strings.Builder{}
+	b.WriteString(m.title + "\n\n")
 	b.WriteString(m.message + "\n\n")
 	b.WriteString("Press any key to exit\n")
 	return b.String()

@@ -5,6 +5,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/erichberger/sw-helper/internal/app"
+	"github.com/erichberger/sw-helper/ui/style"
 )
 
 type homeScreen struct {
@@ -23,7 +24,7 @@ var choices = []choice{
 		key:   storefrontJs,
 	},
 	{
-		label: "Okay, just another storefront js plugin if we're being honets",
+		label: "Okay, just another storefront js plugin if we're being honest",
 		key:   storefrontJs,
 	},
 }
@@ -70,7 +71,7 @@ func (m homeScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m homeScreen) View() string {
 	s := strings.Builder{}
-	s.WriteString("What would you like to do?\n\n")
+	s.WriteString(style.SuccessTitle.Render("What would you like to do?") + "\n\n")
 	for i := 0; i < len(m.choices); i++ {
 		if m.cursor == i {
 			s.WriteString("[x] ")

@@ -6,6 +6,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/erichberger/sw-helper/internal/app"
+	"github.com/erichberger/sw-helper/ui/style"
 )
 
 type Config struct {
@@ -61,10 +62,14 @@ func (m AppModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, nil
 		}
 	case errorMsg:
-		m.screen = endScreen{message: payload.err.Error()}
+		m.screen = endScreen{
+			title:   style.ErrorTitle.Render("ERROR"),
+			message: payload.err.Error()}
 		return m, nil
 	case successMsg:
-		m.screen = endScreen{message: payload.message}
+		m.screen = endScreen{
+			title:   style.SuccessTitle.Render("SUCCESS"),
+			message: payload.message}
 		return m, nil
 	}
 
