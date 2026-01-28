@@ -44,3 +44,21 @@ changelog:
 
 release:
   footer:
+
+homebrew_casks:
+  - name: sw-helper
+
+    binaries:
+      - sw-helper
+
+    homepage: "https://github.com/erichberger/sw-helper"
+    description: "TUI helper for Shopware development"
+
+    url:
+      template: "https://github.com/erichberger/sw-helper/releases/download/{{ .Tag }}/{{ .ArtifactName }}"
+      verified: "github.com/erichberger/sw-helper/"
+
+    repository:
+      owner: erichberger
+      name: homebrew-tap
+      branch: main
