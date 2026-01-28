@@ -3,6 +3,7 @@ package tasks
 import (
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -37,18 +38,18 @@ type storefrontJsTemplateData struct {
 
 func (t *storefrontJsTask) generateTemplateMap() (map[string]*template.Template, error) {
 	templates := make(map[string]*template.Template)
-	files, err := filepath.Glob("templates/storefront-js/*")
+	files, err := fs.Glob(storefrontJSTemplates, "templates/storefront-js/*")
 	if err != nil {
-		return nil, fmt.Errorf("Error parsing templates: %s", err.Error())
+		return nil, fmt.Errorf("error parsing templates: %w", err)
 	}
 
 	for _, file := range files {
 		fileName := filepath.Base(file)
-		template, err := template.ParseFiles(file)
+		templ, err := template.ParseFS(storefrontJSTemplates, file)
 		if err != nil {
 			return nil, err
 		}
-		templates[fileName] = template
+		templates[fileName] = templ
 	}
 
 	return templates, nil

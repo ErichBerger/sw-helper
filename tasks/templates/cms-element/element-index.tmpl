@@ -1,0 +1,17 @@
+import './component';
+import './config';
+import './preview';
+
+Shopware.Service('cmsService').registerCmsElement({
+    name: '{{.KebabName}}',
+    label: 'cms.elements.{{.KebabName}}.label',
+    component: 'cms-el-{{.KebabName}}',
+    configComponent: 'cms-el-config-{{.KebabName}}',
+    previewComponent: 'cms-el-preview-{{.KebabName}}',
+    defaultConfig: {
+        example: {
+            source: 'static',
+            value: '',
+        },
+    },
+});
