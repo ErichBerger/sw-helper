@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/erichberger/sw-helper/ui/style"
 )
 
 type FormFooter struct {
@@ -49,23 +50,25 @@ func (f *FormFooter) Update(msg tea.Msg) (Component, tea.Cmd) {
 
 func (f *FormFooter) View(active bool) string {
 	output := strings.Builder{}
-	if active {
-		output.WriteString("")
-	} else {
-		output.WriteString("")
-	}
+
 	for i, button := range f.Buttons {
-		if f.cursor == i {
-			output.WriteString("[")
-		} else {
-			output.WriteString(" ")
+		leftSelector := style.FormActiveColor.Render("[")
+		rightSelector := style.FormActiveColor.Render("]")
+
+		if !active {
+			leftSelector = " "
+			rightSelector = " "
 		}
-		output.WriteString(button.Label)
-		if f.cursor == i {
-			output.WriteString("]")
-		} else {
-			output.WriteString(" ")
+		buttonLabel := style.FormActiveLabel.Render(button.Label)
+		if f.cursor != i {
+			leftSelector = " "
+			rightSelector = " "
+			buttonLabel = button.Label
 		}
+		output.WriteString(leftSelector)
+		output.WriteString(buttonLabel)
+		output.WriteString(rightSelector)
+
 		if i != len(f.Buttons)-1 {
 			output.WriteString("\t\t")
 		}

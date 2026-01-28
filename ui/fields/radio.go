@@ -5,6 +5,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/erichberger/sw-helper/ui/component"
+	"github.com/erichberger/sw-helper/ui/style"
 )
 
 type RadioField struct {
@@ -53,29 +54,39 @@ func (f *RadioField) Update(msg tea.Msg) (component.Component, tea.Cmd) {
 }
 
 func (f *RadioField) View(active bool) string {
-	output := strings.Builder{}
-	output.WriteString(f.Label + "\n")
-	output.WriteString(":: ")
+	label := f.Label
+	inputMarker := style.InputMarker
+	leftSelector := "["
+	rightSelector := "]"
 
-	marker := "x"
 	if active {
-		marker = "●"
+		label = style.FormActiveLabel.Render(label)
+		inputMarker = style.FormActiveColor.Render(inputMarker)
+		leftSelector = style.FormActiveColor.Render(leftSelector)
+		rightSelector = style.FormActiveColor.Render(rightSelector)
 	}
+	output := strings.Builder{}
+	output.WriteString(label + "\n")
+	output.WriteString(inputMarker)
+
 	for i, mode := range f.Modes {
-		output.WriteString("[")
 		if f.cursor == i {
-			output.WriteString(marker)
+			output.WriteString(leftSelector)
 		} else {
 			output.WriteString(" ")
 		}
-		output.WriteString("] ")
 		output.WriteString(mode.Label)
+		if f.cursor == i {
+			output.WriteString(rightSelector)
+		} else {
+			output.WriteString(" ")
+		}
 		if i != len(f.Modes)-1 {
 			output.WriteString("\t")
 		}
 
 	}
-	output.WriteString("\n\n")
+	output.WriteString("\n")
 	return output.String()
 }
 

@@ -19,7 +19,6 @@ type TextField struct {
 
 func NewTextField(label string, key string) *TextField {
 	input := textinput.New()
-	input.Prompt = ":: "
 	return &TextField{
 		Label: label,
 		Input: input,
@@ -34,17 +33,19 @@ func (f *TextField) Update(msg tea.Msg) (component.Component, tea.Cmd) {
 }
 
 func (f *TextField) View(active bool) string {
+	f.Input.Blur()
+	f.Input.Prompt = style.InputMarker
+
+	out := strings.Builder{}
+	label := f.Label
+
 	if active {
 		f.Input.Focus()
-	} else {
-		f.Input.Blur()
+		label = style.FormActiveLabel.Render(f.Label)
+		f.Input.Prompt = style.FormActiveColor.Render(style.InputMarker)
 	}
-	out := strings.Builder{}
-	if active {
-		out.WriteString(style.FormActiveLabel.Render(f.Label))
-	} else {
-		out.WriteString(f.Label)
-	}
+	out.WriteString(label)
+
 	out.WriteString("\n")
 	out.WriteString(f.Input.View())
 	out.WriteString("\n")
