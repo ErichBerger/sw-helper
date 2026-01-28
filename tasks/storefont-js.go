@@ -111,6 +111,15 @@ func (t *storefrontJsTask) Steps(config *app.Config) ([]Step, error) {
 }
 
 func (t *storefrontJsTask) Validate(config *app.Config) error {
+	if t.options.BasePluginName == "" {
+		return fmt.Errorf("base plugin not selected")
+	}
+	if t.options.PascalPluginName == "" {
+		return fmt.Errorf("plugin name not selected")
+	}
+	if t.options.ImportMode == "" {
+		return fmt.Errorf("no input mode selected")
+	}
 	basePluginPath := filepath.Join(config.BaseDir, t.options.BasePluginName)
 
 	info, err := os.Stat(basePluginPath)
