@@ -1,0 +1,10 @@
+{% block sw_cms_element_{{.TwigName}}_config %}
+    {# Note the update method is the generic onConfigChange #}
+    <sw-text-field
+        :value="element.config.example.value"
+        @update:value="onConfigChange('example', $event)"
+        label="Example"
+        placeholder="Nothin' to see here"
+    />
+
+{% endblock %}

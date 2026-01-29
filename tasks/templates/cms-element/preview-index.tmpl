@@ -1,0 +1,11 @@
+import template from './sw-cms-el-preview-{{.KebabName}}.html.twig';
+import './sw-cms-el-preview-{{.KebabName}}.scss';
+
+Shopware.Component.register('sw-cms-el-preview-{{.KebabName}}', {
+    template,
+    computed: {
+        assetFilter() {
+            return Shopware.Filter.getByName('asset');
+        }
+    }
+});

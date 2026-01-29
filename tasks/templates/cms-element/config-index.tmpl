@@ -1,0 +1,24 @@
+import template from './sw-cms-el-config-{{.KebabName}}.html.twig';
+
+Shopware.Component.register('sw-cms-el-config-{{.KebabName}}', {
+    template,
+
+    mixins: ['cms-element'],
+
+    data() {
+        
+    },
+    created() {
+        this.createdConfig();
+    },
+    methods: {
+        // This helps avoid n update methods for n fields. See config twig for use.
+        onConfigChange(key, value) {
+            this.element.config[key].value = value;
+            this.$emit('element-update', this.element);
+        },
+        createdConfig() {
+            this.initElementConfig('{{.KebabName}}');
+        }
+    }
+});
