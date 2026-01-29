@@ -24,8 +24,8 @@ var choices = []choice{
 		key:   storefrontJs,
 	},
 	{
-		label: "Okay, just another storefront js plugin if we're being honest",
-		key:   storefrontJs,
+		label: "CMS Element",
+		key:   cmsElement,
 	},
 }
 
@@ -54,12 +54,12 @@ func (m homeScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				target: m.choices[m.cursor].key,
 			})
 
-		case "down", "j":
+		case "down", "j", "tab":
 			m.cursor++
 			if m.cursor >= len(m.choices) {
 				m.cursor = 0
 			}
-		case "up", "k":
+		case "up", "k", "shift+tab":
 			m.cursor--
 			if m.cursor < 0 {
 				m.cursor = len(m.choices) - 1

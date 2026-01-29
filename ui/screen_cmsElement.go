@@ -10,31 +10,17 @@ import (
 	"github.com/erichberger/sw-helper/ui/style"
 )
 
-type storefrontJsScreen struct {
+type cmsElementScreen struct {
 	config *app.Config
 	form   *form.Form
 }
 
-type formSubmitMsg struct {
-}
-type formBackMsg struct {
-}
-
-type successMsg struct {
-	message string
-}
-
-type BackMsg struct {
-}
-
-func (m *storefrontJsScreen) handleFormSubmit(values map[string]string) tea.Cmd {
+func (m *cmsElementScreen) handleFormSubmit(values map[string]string) tea.Cmd {
 	return func() tea.Msg {
 		// call the eventual 'handler' for this
-		task, err := tasks.NewStorefrontJsTask(tasks.StorefrontJsOptions{
-			BasePluginName:   values["basePluginName"],
-			PascalPluginName: values["pluginName"],
-			ImportMode:       values["importMode"],
-			Hook:             values["hook"],
+		task, err := tasks.NewCmsElementTask(tasks.CmsElementOptions{
+			BasePluginName:       values["basePluginName"],
+			PascalCmsElementName: values["cmsElementName"],
 		})
 
 		if err != nil {
@@ -47,45 +33,23 @@ func (m *storefrontJsScreen) handleFormSubmit(values map[string]string) tea.Cmd 
 		if err := tasks.HandleTask(task, m.config); err != nil {
 			return errorMsg{err: err}
 		}
-		return successMsg{message: "Successfully made plugin. Enjoy!"}
+		return successMsg{message: "Successfully made CMS Element. Enjoy!"}
 	}
 
 }
 
-func newStorefrontJsScreen(config *app.Config) tea.Model {
-	// Base plugin
+func newCmsElementScreen(config *app.Config) tea.Model {
+
 	base := fields.NewTextField("Base Shopware Plugin", "basePluginName")
 	base.Input.Placeholder = "ITWholeSalerPro"
 	base.Input.Width = 40
 	base.Input.CharLimit = 40
-	// Name field
-	name := fields.NewTextField("JS Plugin Name (Pascal Case)", "pluginName")
 
+	name := fields.NewTextField("CMS Element Name (Pascal Case)", "cmsElementName")
 	name.Input.Placeholder = "TitanExampleName"
 	name.Input.Width = 40
 	name.Input.CharLimit = 40
 
-	// Hook field
-	hook := fields.NewTextField("JS Hook in HTML (css selector, not required)", "hook")
-
-	hook.Input.Placeholder = "[data-titan-attribute]"
-	hook.Input.Width = 40
-	hook.Input.CharLimit = 40
-
-	mode := fields.NewRadioField(
-		"How to register plugin in main.js: ",
-		[]fields.RadioOption{
-			{
-				Label: "Synchronously",
-				Value: tasks.STOREFRONT_JS_IMPORT_MODE_SYNC,
-			},
-			{
-				Label: "Asynchronously",
-				Value: tasks.STOREFRONT_JS_IMPORT_MODE_ASYNC,
-			},
-		},
-		"importMode",
-	)
 	formFooter := component.NewFormFooter(
 		[]component.Button{
 			{
@@ -98,27 +62,25 @@ func newStorefrontJsScreen(config *app.Config) tea.Model {
 			},
 		},
 	)
-
-	return storefrontJsScreen{
+	return cmsElementScreen{
+		// Base plugin
 		config: config,
 		form: &form.Form{
-			Title: style.SuccessTitle.Render("Options for creating a Javascript Storefront Plugin"),
+			Title: style.SuccessTitle.Render("Options for creating a CMS Element"),
 			Components: []component.Component{
 				base,
 				name,
-				hook,
-				mode,
 				formFooter,
 			},
 		},
 	}
 }
-func (m storefrontJsScreen) Init() tea.Cmd {
+func (m cmsElementScreen) Init() tea.Cmd {
 	// Just return `nil`, which means "no I/O right now, please."
 	return nil
 }
 
-func (m storefrontJsScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m cmsElementScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
@@ -137,7 +99,7 @@ func (m storefrontJsScreen) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m storefrontJsScreen) View() string {
+func (m cmsElementScreen) View() string {
 	return m.form.View()
 
 }

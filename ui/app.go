@@ -23,10 +23,14 @@ type screenFactory func(*app.Config) tea.Model
 type navigationMsg struct {
 	target string
 }
+type errorMsg struct {
+	err error
+}
 
 const (
 	home         = "home"
 	storefrontJs = "storefront-js"
+	cmsElement   = "cms-element"
 )
 
 var config = Config{}
@@ -34,6 +38,7 @@ var config = Config{}
 var routes = map[string]screenFactory{
 	home:         newHomeScreen,
 	storefrontJs: newStorefrontJsScreen,
+	cmsElement:   newCmsElementScreen,
 }
 
 func logError(err string) {

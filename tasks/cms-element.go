@@ -22,8 +22,8 @@ type cmsElementTask struct {
 }
 
 type CmsElementOptions struct {
-	BasePluginName   string
-	PascalPluginName string
+	BasePluginName       string
+	PascalCmsElementName string
 }
 
 type cmsElementTemplateData struct {
@@ -62,11 +62,11 @@ func (t *cmsElementTask) Steps(config *app.Config) ([]Step, error) {
 		return nil, err
 	}
 
-	kebabName := pascalCaseToKebab(t.options.PascalPluginName)
+	kebabName := pascalCaseToKebab(t.options.PascalCmsElementName)
 	twigName := strings.ReplaceAll(kebabName, "-", "_")
 	elementRootDir := filepath.Join(config.BaseDir, t.options.BasePluginName, FILEPATH_ADMIN_ELEMENTS, kebabName)
 	data := cmsElementTemplateData{
-		PascalName: t.options.PascalPluginName,
+		PascalName: t.options.PascalCmsElementName,
 		KebabName:  kebabName,
 		TwigName:   twigName,
 	}
@@ -146,7 +146,7 @@ func (t *cmsElementTask) Validate(config *app.Config) error {
 	if t.options.BasePluginName == "" {
 		return fmt.Errorf("base plugin not selected")
 	}
-	if t.options.PascalPluginName == "" {
+	if t.options.PascalCmsElementName == "" {
 		return fmt.Errorf("plugin name not selected")
 	}
 	basePluginPath := filepath.Join(config.BaseDir, t.options.BasePluginName)
@@ -164,7 +164,7 @@ func (t *cmsElementTask) Validate(config *app.Config) error {
 		return fmt.Errorf("%s exists but is not a directory", basePluginPath)
 	}
 
-	kebabName := pascalCaseToKebab(t.options.PascalPluginName)
+	kebabName := pascalCaseToKebab(t.options.PascalCmsElementName)
 	elementRootDir := filepath.Join(config.BaseDir, t.options.BasePluginName, FILEPATH_ADMIN_ELEMENTS, kebabName)
 
 	info, err = os.Stat(elementRootDir)
