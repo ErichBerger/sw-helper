@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 
@@ -15,15 +16,18 @@ func main() {
 	viper.AddConfigPath(".")
 
 	err := viper.ReadInConfig()
+	if err != nil {
+		var notFound viper.ConfigFileNotFoundError
+		if !errors.As(err, &notFound) {
+			panic(fmt.Errorf("failure when parsing configuration\n%w\n", err))
+		}
+	}
 	viper.SetDefault("BaseDirectory", "custom/static-plugins")
 	baseDir := viper.GetString("BaseDirectory")
 	if baseDir == "" {
-		fmt.Fprintf(os.Stderr, "No base directory found")
+		panic(fmt.Errorf("no base directory defined either in default or config file\n"))
 	}
 
-	if err != nil {
-		panic(fmt.Errorf("fatal error with config file: %w", err))
-	}
 	config := &app.Config{
 		BaseDir: baseDir,
 	}
@@ -33,7 +37,7 @@ func main() {
 	)
 	_, err = p.Run()
 	if err != nil {
-		fmt.Println("Oh no:", err)
+		fmt.Fprintln(os.Stdout, "Oh no: %w", err)
 		os.Exit(1)
 	}
 
